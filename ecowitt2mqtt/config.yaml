@@ -11,9 +11,11 @@ ports:
 ports_description:
   - 8485/tcp": "tcp-listen port"
 image: "bachya/ecowitt2mqtt"
-startup: "application
+startup: "application"
 service:
   - "mqtt:need"
+map:
+  - config:rw
 options:
   mqtt:
     - base_topic: "ecowitt2mqtt"
