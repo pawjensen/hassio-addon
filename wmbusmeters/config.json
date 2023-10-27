@@ -1,0 +1,38 @@
+{
+  "name": "Wmbusmeters (W-MBus to MQTT)",
+  "version": "1.14.0",
+  "slug": "wmbusmeters",
+  "description": "Acquire utility meter readings using the wireless mbus protocol (WMBUS)",
+  "arch": ["armv7", "aarch64", "amd64"],
+  "panel_icon": "mdi:home-automation",
+  "image": "wmbusmeters/wmbusmeters-{arch}",
+  "boot": "auto",
+  "init" : false,
+  "ingress": true,
+  "devices": ["/dev/ttyUSB0", "/dev/ttyAMA0"],
+  "usb": true,
+  "uart": true,
+  "startup": "application",
+  "services": [
+    "mqtt:need"
+  ],
+  "map": [
+    "share:rw",
+    "config:rw"
+  ],
+  "options": {
+    "data_path": "/config/addon/wmbusmeter",
+    "mqtt": {},
+  },
+  "schema": {
+    "data_path": "str",
+    "mqtt": {
+      "server": "str?",
+      "ca": "str?",
+      "key": "str?",
+      "cert": "str?",
+      "user": "str?",
+      "password": "str?"
+    },
+  }
+}
