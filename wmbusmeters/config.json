@@ -5,7 +5,7 @@
     "description": "Acquire utility meter readings using the wireless mbus protocol (WMBUS)",
     "arch": ["armv7", "aarch64", "amd64"],
     "panel_icon": "mdi:home-automation",
-    "image": "wmbusmeters/wmbusmeters-{arch}",
+    "image": "wmbusmeters/wmbusmeters",
     "boot": "auto",
     "init" : false,
     "ingress": true,
