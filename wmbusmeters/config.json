@@ -1,17 +1,16 @@
 {
-    "name": "Wmbusmeters (W-MBus to MQTT)",
-    "version": "release-1.14.0",
+    "name": "test - Wmbusmeters (W-MBus to MQTT)",
+    "version": "1.13.0",
     "slug": "wmbusmeters",
-    "description": "Acquire utility meter readings using the wireless mbus protocol (WMBUS)",
-    "arch": ["armv7", "aarch64", "amd64"],
+    "description": "test - Acquire utility meter readings using the wireless mbus protocol (WMBUS)",
+    "arch": ["armhf", "amd64", "armv7"],
     "panel_icon": "mdi:home-automation",
-    "image": "wmbusmeters/wmbusmeters",
     "boot": "auto",
-    "init" : false,
+    "init": false,
     "ingress": true,
-    "devices": ["/dev/ttyUSB0", "/dev/ttyAMA0"],
+    "devices": ["/dev/bus/usb"],
     "usb": true,
-    "uart": true,
+    "uart": false,
     "startup": "application",
     "services": [
         "mqtt:need"
@@ -20,11 +19,43 @@
         "share:rw",
         "config:rw"
     ],
+    "ports": {
+        "9022/tcp": 9022
+    },
+    "ports_description": {
+        "9011/udp": "Netcat udp-listen port",
+        "9022/tcp": "Netcat tcp-listen port"
+    },
     "options": {
+        "reset_config": "no",
         "data_path": "/config/addon/wmbusmeter",
-        "mqtt": {}
+        "mqtt": {},
+        "config": {
+            "device": "rtlwmbus",
+            "listento" : "c1",
+            "donotprobe": "/dev/ttyAMA0",
+            "format": "json",
+            "logfile": "/config/addon/wmbusmeter/logs/log.log",
+            "loglevel": "normal",
+            "logtelegrams": "true",
+            "shell": "/wmbusmeters/mosquitto_pub.sh \"wmbusmeters/$METER_NAME\" \"$METER_JSON\"",
+            "meterfiles": "/config/addon/wmbusmeter/logs/meter_readings",
+            "meterfilesaction": "append",
+            "meterfilesnaming": "name",
+            "meterfilestimestamp": "day"
+        },
+        "look_for_meters": "no",
+        "meters": [
+            {
+                "name":"tapwater",
+                "driver":"amiplus",
+                "id":12345678,
+                "key":"NOKEY"
+            }
+        ]
     },
     "schema": {
+        "reset_config": "list(no|yes)",
         "data_path": "str",
         "mqtt": {
             "server": "str?",
@@ -33,6 +64,29 @@
             "cert": "str?",
             "user": "str?",
             "password": "str?"
-        }
+        },
+        "config": {
+            "loglevel": "str?",
+            "device": "str?",
+            "listento": "str?",
+            "donotprobe": "str?",
+            "logtelegrams": "str?",
+            "format": "str?",
+            "logfile": "str?",
+            "shell": "str?",
+            "meterfiles": "str?",
+            "meterfilesaction": "str?",
+            "meterfilesnaming": "str?",
+            "meterfilestimestamp": "str?"
+        },
+        "look_for_meters": "list(no|yes)",
+        "meters": [
+            {
+                "name":"str?",
+                "driver":"str?",
+                "id":"int?",
+                "key":"str?"
+            }
+        ]
     }
-  }
+}
