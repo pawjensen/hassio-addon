@@ -1,23 +1,22 @@
 {
-    "name": "Wmbusmeters (W-MBus to MQTT)",
-    "version": "release-1.14.0",
+    "name": "test - Wmbusmeters (W-MBus to MQTT)",
+    "version": "1.13.0",
     "slug": "wmbusmeters",
-    "description": "Acquire utility meter readings using the wireless mbus protocol (WMBUS)",
+    "description": "test - Acquire utility meter readings using the wireless mbus protocol (WMBUS)",
     "arch": [
-        "armv7",
-        "aarch64",
-        "amd64"
+        "armhf",
+        "amd64",
+        "armv7"
     ],
     "panel_icon": "mdi:home-automation",
     "boot": "auto",
     "init": false,
     "ingress": true,
     "devices": [
-        "/dev/ttyUSB0",
-        "/dev/ttyAMA0"
+        "/dev/bus/usb"
     ],
     "usb": true,
-    "uart": true,
+    "uart": false,
     "startup": "application",
     "services": [
         "mqtt:need"
@@ -27,8 +26,7 @@
         "config:rw"
     ],
     "ports": {
-        "9011/udp": null,
-        "9022/tcp": null
+        "9022/tcp": 9022
     },
     "ports_description": {
         "9011/udp": "Netcat udp-listen port",
@@ -39,14 +37,28 @@
         "data_path": "/config/addon/wmbusmeter",
         "mqtt": {},
         "config": {
-            "loglevel": "normal",
-            "device": "auto:t1",
+            "device": "rtlwmbus",
+            "listento": "c1",
             "donotprobe": "/dev/ttyAMA0",
-            "logtelegrams": "false",
             "format": "json",
-            "logfile": "/config/addon/wmbusmeter/logs/",
-            "shell": "/wmbusmeters/mosquitto_pub.sh \"wmbusmeters/$METER_NAME\" \"$METER_JSON\""
-        }
+            "logfile": "/config/addon/wmbusmeter/logs/log.log",
+            "loglevel": "normal",
+            "logtelegrams": "true",
+            "shell": "/wmbusmeters/mosquitto_pub.sh \"wmbusmeters/$METER_NAME\" \"$METER_JSON\"",
+            "meterfiles": "/config/addon/wmbusmeter/logs/meter_readings",
+            "meterfilesaction": "append",
+            "meterfilesnaming": "name",
+            "meterfilestimestamp": "day"
+        },
+        "look_for_meters": "no",
+        "meters": [
+            {
+                "name": "tapwater",
+                "driver": "amiplus",
+                "id": 12345678,
+                "key": "NOKEY"
+            }
+        ]
     },
     "schema": {
         "reset_config": "list(no|yes)",
@@ -62,11 +74,25 @@
         "config": {
             "loglevel": "str?",
             "device": "str?",
+            "listento": "str?",
             "donotprobe": "str?",
             "logtelegrams": "str?",
             "format": "str?",
             "logfile": "str?",
-            "shell": "str?"
-        }
+            "shell": "str?",
+            "meterfiles": "str?",
+            "meterfilesaction": "str?",
+            "meterfilesnaming": "str?",
+            "meterfilestimestamp": "str?"
+        },
+        "look_for_meters": "list(no|yes)",
+        "meters": [
+            {
+                "name": "str?",
+                "driver": "str?",
+                "id": "int?",
+                "key": "str?"
+            }
+        ]
     }
 }
