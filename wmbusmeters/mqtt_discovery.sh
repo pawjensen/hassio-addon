@@ -2,6 +2,7 @@
 
 aryDiscTopic=()
 pub_args=()
+bashio::log.info "l5"
 while getopts h:p:u:P:c:w: flag
 do
     case "${flag}" in
@@ -12,6 +13,14 @@ do
 done
 
 # Get discovery_prefix
+# if bashio::config.exists "mqtt.discovery_prefix"
+# then MQTT_DISCOVERY_PREFIX=$(bashio::config "mqtt.discovery_prefix")
+# else MQTT_DISCOVERY_PREFIX=$(bashio::services mqtt "discovery_prefix"); fi
+# if [ "${MQTT_DISCOVERY_PREFIX+true}" ] || [ $MQTT_DISCOVERY_PREFIX != "null" ];
+# then MQTT_DISCOVERY_PREFIX="homeassistant"; fi
+
+bashio::log.info "l22"
+
 if bashio::config.exists "mqtt.discovery_prefix"
 then MQTT_DISCOVERY_PREFIX=$(bashio::config "mqtt.discovery_prefix")
 else MQTT_DISCOVERY_PREFIX=$(bashio::services mqtt "discovery_prefix"); fi
@@ -20,7 +29,11 @@ then MQTT_DISCOVERY_PREFIX="homeassistant"; fi
 
 
 # Is MQTT discovery enabled?
-CONFIG_MQTTDISCOVERY_ENABLED="$(jq --raw-output -c -M '.enable_mqtt_discovery' $CONFIG_PATH)"
+# CONFIG_MQTTDISCOVERY_ENABLED="$(jq --raw-output -c -M '.enable_mqtt_discovery' $CONFIG_PATH)"
+
+bashio::log.info "test"
+CONFIG_MQTTDISCOVERY_ENABLED=$(bashio::config "MQTT_discovery")
+bashio::log.info  "test"
 if [ $CONFIG_MQTTDISCOVERY_ENABLED == "true" ]; then
     bashio::log.info "\nMQTT Discovery ..."
 
@@ -96,4 +109,3 @@ do
         /usr/bin/mosquitto_pub ${pub_args[@]} -r -t "${topic}" -n
     fi
 done
-

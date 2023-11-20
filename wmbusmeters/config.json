@@ -26,29 +26,24 @@
         "config:rw"
     ],
     "ports": {
-        "9022/tcp": 9022
+        "9011/tcp": null,
+        "9022/tcp": null
     },
     "ports_description": {
         "9011/udp": "Netcat udp-listen port",
         "9022/tcp": "Netcat tcp-listen port"
     },
     "options": {
-        "reset_config": "no",
         "data_path": "/config/addon/wmbusmeter",
-        "mqtt": {},
         "config": {
             "device": "rtlwmbus",
             "listento": "c1",
             "donotprobe": "/dev/ttyAMA0",
             "format": "json",
-            "logfile": "/config/addon/wmbusmeter/logs/log.log",
+            "logfile": "/dev/stdout",
             "loglevel": "normal",
-            "logtelegrams": "true",
-            "shell": "/wmbusmeters/mosquitto_pub.sh \"wmbusmeters/$METER_NAME\" \"$METER_JSON\"",
-            "meterfiles": "/config/addon/wmbusmeter/logs/meter_readings",
-            "meterfilesaction": "append",
-            "meterfilesnaming": "name",
-            "meterfilestimestamp": "day"
+            "logtelegrams": "false",
+            "shell": "/wmbusmeters/mosquitto_pub.sh \"wmbusmeters/$METER_NAME\" \"$METER_JSON\""
         },
         "look_for_meters": "no",
         "meters": [
@@ -58,19 +53,12 @@
                 "id": 12345678,
                 "key": "NOKEY"
             }
-        ]
+        ],
+        "mqtt": {},
+        "MQTT_discovery": "true"
     },
     "schema": {
-        "reset_config": "list(no|yes)",
         "data_path": "str",
-        "mqtt": {
-            "server": "str?",
-            "ca": "str?",
-            "key": "str?",
-            "cert": "str?",
-            "user": "str?",
-            "password": "str?"
-        },
         "config": {
             "loglevel": "str?",
             "device": "str?",
@@ -93,6 +81,15 @@
                 "id": "int?",
                 "key": "str?"
             }
-        ]
+        ],
+        "mqtt": {
+            "server": "str?",
+            "ca": "str?",
+            "key": "str?",
+            "cert": "str?",
+            "user": "str?",
+            "password": "str?"
+        },
+        "MQTT_discovery": "list(true|false)"
     }
 }
