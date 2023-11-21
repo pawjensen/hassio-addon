@@ -55,7 +55,7 @@
             }
         ],
         "mqtt": {},
-        "MQTT_discovery": "true"
+        "enable_mqtt_discovery": "true"
     },
     "schema": {
         "data_path": "str",
@@ -90,6 +90,6 @@
             "user": "str?",
             "password": "str?"
         },
-        "MQTT_discovery": "list(true|false)"
+        "enable_mqtt_discovery": "list(true|false)"
     }
 }

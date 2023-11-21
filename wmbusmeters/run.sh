@@ -1,16 +1,13 @@
 #!/usr/bin/with-contenv bashio
 
-# CONFIG_PATH=/data/options_custom.json
-bashio::log.info "WMBusMeters version"
-/wmbusmeters/wmbusmeters --version
-
 CONFIG_PATH=/data/options.json
 LOOK_FOR_METER=$(bashio::config 'look_for_meters')
-
 CONFIG_DATA_PATH=$(bashio::jq "${CONFIG_PATH}" '.data_path')
 CONFIG_CONF=$(bashio::jq "${CONFIG_PATH}" '.config')
 CONFIG_METERS=$(bashio::jq "${CONFIG_PATH}" '.meters')
 CONFIG_MQTT=$(bashio::jq "${CONFIG_PATH}" '.mqtt')
+
+rm -rf $CONFIG_DATA_PATH/etc/*
 
 bashio::log.info "Syncing wmbusmeters configuration ..."
 if ! bashio::fs.directory_exists "${CONFIG_DATA_PATH}/logs/meter_readings"; then
@@ -90,17 +87,14 @@ MESSAGE=\$2
 EOL
 chmod a+x /wmbusmeters/mosquitto_pub.sh
 
-bashio::log.info "MQTT discovery"
-# bashio::log:info "${pub_args}"
-# Running MQTT discovery
-
-# Copy MQTT_discovery to config_path
-cp -r /mqtt_discovery $CONFIG_DATA_PATH/etc/
-
-/mqtt_discovery.sh ${pub_args[@]} -c $CONFIG_PATH -w $CONFIG_DATA_PATH || true
+CONFIG_MQTTDISCOVERY_ENABLED=$(bashio::config "enable_mqtt_discovery")
+if [ $CONFIG_MQTTDISCOVERY_ENABLED == "true" ]; then
+    bashio::log.info "MQTT discovery"
+    /mqtt_discovery.sh ${pub_args[@]} -c $CONFIG_PATH -w $CONFIG_DATA_PATH || true
+fi
 
 bashio::log.info "Starting web configuration service."
-python3 /flask/app.py &
+python3 /rootfs/flask/app.py &
 
 bashio::log.info "Running wmbusmeters ..."
 /wmbusmeters/wmbusmeters --useconfig=$CONFIG_DATA_PATH
