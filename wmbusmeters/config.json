@@ -1,8 +1,8 @@
 {
-    "name": "test - Wmbusmeters (W-MBus to MQTT)",
+    "name": "Wmbusmeters (W-MBus to MQTT)",
     "version": "1.13.1",
     "slug": "wmbusmeters",
-    "description": "test - Acquire utility meter readings using the wireless mbus protocol (WMBUS)",
+    "description": "Acquire utility meter readings using the wireless mbus protocol (WMBUS)",
     "arch": [
         "aarch64",
         "armhf",
@@ -47,7 +47,7 @@
             "logtelegrams": "false",
             "shell": "/wmbusmeters/mosquitto_pub.sh \"wmbusmeters/$METER_NAME\" \"$METER_JSON\""
         },
-        "look_for_meters": "no",
+        "look_for_meters": "yes",
         "meters": [
             {
                 "name": "tapwater",
@@ -57,7 +57,7 @@
             }
         ],
         "mqtt": {},
-        "enable_mqtt_discovery": "true"
+        "enable_mqtt_discovery": "false"
     },
     "schema": {
         "data_path": "str",

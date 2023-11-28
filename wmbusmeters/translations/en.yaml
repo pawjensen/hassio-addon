@@ -1,0 +1,19 @@
+configuration:
+  data_path:
+    name: Data Path for the configuration files
+    description: default path is XXXXXX
+  config":
+    name: WMBusMeters Configuration
+    description: Enter the right setting here
+  look_for_meters:
+    name: Look for WMbus meters
+    description: Select yes to list all meters that can be seen
+  meters:
+    name: Meters
+    description: Enter the known meters
+  mqtt:
+    name: Custom MQTT setting
+    description: Leave empty to use Home Assistants default
+  enable_mqtt_discovery:
+    name: Eneable MQTT discovery
+    description: Select to make it auto discovery for Home Assistant
