@@ -4,6 +4,7 @@
     "slug": "wmbusmeters",
     "description": "test - Acquire utility meter readings using the wireless mbus protocol (WMBUS)",
     "arch": [
+        "aarch64",
         "armhf",
         "amd64",
         "armv7"

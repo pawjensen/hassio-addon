@@ -7,6 +7,8 @@ CONFIG_CONF=$(bashio::jq "${CONFIG_PATH}" '.config')
 CONFIG_METERS=$(bashio::jq "${CONFIG_PATH}" '.meters')
 CONFIG_MQTT=$(bashio::jq "${CONFIG_PATH}" '.mqtt')
 
+/wmbusmeters/wmbusmeters --version
+
 rm -rf $CONFIG_DATA_PATH/etc/*
 
 bashio::log.info "Syncing wmbusmeters configuration ..."
@@ -89,6 +91,7 @@ chmod a+x /wmbusmeters/mosquitto_pub.sh
 
 CONFIG_MQTTDISCOVERY_ENABLED=$(bashio::config "enable_mqtt_discovery")
 if [ $CONFIG_MQTTDISCOVERY_ENABLED == "true" ]; then
+    cp -r /mqtt_discovery $CONFIG_DATA_PATH/etc
     bashio::log.info "MQTT discovery"
     /mqtt_discovery.sh ${pub_args[@]} -c $CONFIG_PATH -w $CONFIG_DATA_PATH || true
 fi
