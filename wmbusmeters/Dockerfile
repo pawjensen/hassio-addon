@@ -1,5 +1,5 @@
 ARG BUILD_FROM
-FROM bibolv/wmbusmeters-ha-addon-edge-armv7 as build
+FROM wmbusmeters/wmbusmeters-ha-addon-edge-aarch64:1.13.1 as BUILD
 
 ADD mqtt_discovery/ /mqtt_discovery/
 COPY mqtt_discovery.sh /

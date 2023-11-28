@@ -1,6 +1,6 @@
 {
     "name": "test - Wmbusmeters (W-MBus to MQTT)",
-    "version": "1.13.0",
+    "version": "1.13.1",
     "slug": "wmbusmeters",
     "description": "test - Acquire utility meter readings using the wireless mbus protocol (WMBUS)",
     "arch": [
@@ -13,7 +13,8 @@
     "init": false,
     "ingress": true,
     "devices": [
-        "/dev/bus/usb"
+        "/dev/ttyUSB0",
+        "/dev/ttyAMA0"
     ],
     "usb": true,
     "uart": false,
