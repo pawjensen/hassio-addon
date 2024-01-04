@@ -1,0 +1,78 @@
+name: Wmbusmeters (W-MBus to MQTT)
+version: 1.13.1
+slug: wmbusmeters
+description: Acquire utility meter readings using the wireless mbus protocol (WMBUS)
+arch:
+  - aarch64
+  - armhf
+  - amd64
+  - armv7
+panel_icon: mdi:home-automation
+boot: auto
+init: false
+ingress: true
+devices:
+  - "/dev/ttyUSB0"
+  - "/dev/ttyAMA0"
+usb: true
+uart: false
+startup: application
+services:
+  - mqtt:need
+map:
+  - share:rw
+  - config:rw
+ports:
+  9011/tcp:
+  9022/tcp:
+ports_description:
+  9011/udp: Netcat udp-listen port
+  9022/tcp: Netcat tcp-listen port
+options:
+  data_path: "/config/addon/wmbusmeter"
+  config:
+    device: rtlwmbus
+    listento: c1
+    donotprobe: "/dev/ttyAMA0"
+    format: json
+    logfile: "/dev/stdout"
+    loglevel: normal
+    logtelegrams: 'false'
+    shell: /wmbusmeters/mosquitto_pub.sh "wmbusmeters/$METER_NAME" "$METER_JSON"
+  look_for_meters: 'yes'
+  meters:
+  - name: tapwater
+    driver: amiplus
+    id: 12345678
+    key: NOKEY
+  mqtt: {}
+  enable_mqtt_discovery: 'false'
+schema:
+  data_path: str
+  config:
+    loglevel: str?
+    device: str?
+    listento: str?
+    donotprobe: str?
+    logtelegrams: str?
+    format: str?
+    logfile: str?
+    shell: str?
+    meterfiles: str?
+    meterfilesaction: str?
+    meterfilesnaming: str?
+    meterfilestimestamp: str?
+  look_for_meters: list(no|yes)
+  meters:
+  - name: str?
+    driver: str?
+    id: int?
+    key: str?
+  mqtt:
+    server: str?
+    ca: str?
+    key: str?
+    cert: str?
+    user: str?
+    password: str?
+  enable_mqtt_discovery: list(true|false)
